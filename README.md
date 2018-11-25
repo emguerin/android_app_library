@@ -13,4 +13,4 @@ http://henri-potier.xebia.fr/books
 ## Non fait :
 - Essayer une Recycler view à la place de la Custom View
 - Faire le changement d'affichage au changement d'orientation
-- Amélioration de l'affichage au format paysage
+- Améliorer de l'affichage au format paysage
