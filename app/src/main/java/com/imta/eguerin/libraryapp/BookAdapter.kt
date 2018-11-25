@@ -5,9 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
-import android.widget.TextView
-import com.imta.eguerin.libraryapp.Book
-import com.imta.eguerin.libraryapp.R
 
 class BookAdapter(context: Context, private var books: List<Book>) : BaseAdapter() {
 

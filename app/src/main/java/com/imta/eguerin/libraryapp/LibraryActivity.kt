@@ -14,18 +14,19 @@ class LibraryActivity : AppCompatActivity(), BookListFrag.OnClickToDetailsListen
 
         // Met la liste de livres dans le fragment
         supportFragmentManager.beginTransaction()
-                .replace(R.id.list_book_fragment, BookListFrag())
+                .replace(R.id.containerFrameLayout, BookListFrag())
                 .commit()
-
-        // TODO régler problème clic
-        // TODO implémentation page detail (penser au synopsis)
-        // TODO un peu de view
     }
 
-    override fun onNext() {
+    override fun onBookSelected(book : Book) {
+        val bookDetailFrag = BookDetailFrag()
+        val bundle = Bundle()
+        bundle.putParcelable("book", book)
+        bookDetailFrag.arguments = bundle
+
         supportFragmentManager.beginTransaction()
                 .addToBackStack(BookListFrag::class.java.name)
-                .replace(R.id.list_book_fragment, BookDetailFrag(), BookDetailFrag::class.java.name)
+                .replace(R.id.containerFrameLayout, bookDetailFrag, BookDetailFrag::class.java.name)
                 .commit()
     }
 

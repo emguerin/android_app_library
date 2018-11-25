@@ -34,33 +34,32 @@ class BookListFrag : Fragment() {
         // Plant logger cf. Android Timber
         Timber.plant(Timber.DebugTree())
 
-        // TODO build Retrofit
+        // build Retrofit
         val retrofit = Retrofit.Builder()
                 .baseUrl("http://henri-potier.xebia.fr/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
 
-        // TODO create a service
+        // create a service
         val api = retrofit.create(Api::class.java)
 
-        // TODO listBooks()
+        // listBooks()
         val booksCall = api.listBooks()
 
         // mylistadapter = bookadapter  and fill book adapter
         val list = view.findViewById<ListView>(R.id.bookListViewFrag)
         this.bookAdapter = BookAdapter(view.context, emptyList())
         list.adapter = bookAdapter
-        list.setOnItemClickListener { parent, view, position, id ->
+        list.setOnItemClickListener { _, _, position, _ ->
             getBookDetails(position)
         }
-        // TODO enqueue call and display book title
+        // enqueue call and display book title
         booksCall.enqueue(
                 object : Callback<List<Book>> {
 
                     override fun onResponse(call: Call<List<Book>>, response: Response<List<Book>>) {
 
                         Timber.i("Success")
-                        // TODO log books
                         val booksList = response.body()
 
                         booksList?.apply {
@@ -68,12 +67,11 @@ class BookListFrag : Fragment() {
                                 Timber.i("Title : $it")
                             }
                         }
-                        // TODO display book as a list
                         bookAdapter?.changeList(booksList!!)
                     }
 
                     override fun onFailure(call: Call<List<Book>>, t: Throwable) {
-                        // nothing atm
+                        // nothing at the moment
                         Timber.i("Failure")
                     }
 
@@ -83,14 +81,18 @@ class BookListFrag : Fragment() {
     }
 
     private fun getBookDetails(position: Int) {
-//        bookAdapter?.apply {
-//            val book = this.getItem(position)
-//        }
-        listener?.apply { onNext() }
+
+        listener?.apply {
+            bookAdapter?.apply {
+                val book: Book = this.getItem(position)
+                Timber.i("book '${book.title}' selected" )
+                onBookSelected(book)
+            }
+        }
     }
 
     interface OnClickToDetailsListener {
-        fun onNext()
+        fun onBookSelected(book : Book)
     }
 
 }
